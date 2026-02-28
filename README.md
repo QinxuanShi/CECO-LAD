@@ -29,13 +29,17 @@ pip install -r ./environment/requirements.txt
 
 CECO-LAD and other baseline methods are implemented on [HDFS](https://github.com/logpai/loghub/tree/master/HDFS), [OpenStack](https://github.com/logpai/loghub/tree/master/OpenStack), and [BGL](https://github.com/logpai/loghub/tree/master/BGL) dataset. These datasets are available on [LogHub](https://github.com/logpai/loghub). You can also obtain these datasets that are well pre-processed from [Google Drive](https://drive.google.com/drive/folders/1iBBTYIx1DaEV5lDh6dO7L6Klb15wUHcI?usp=drive_link).
 
+## Download Trained Model
+
+The trained BAT and Q-BAT models can be downloaded from the [Google Drive](https://drive.google.com/drive/folders/1dh_pSu5M7fZVIWpdwfyBa4OLC4MKO1N0?usp=drive_link).
+
 # Experiment
 
 ## Edge-based Q-BAT
 
 Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.4/) (version 0.4) for quantization and lower the model for Q-BAT at the edge.
 
-According to the guideline of ExecuTorch, clone and install the ExecuTorch locally.
+According to the guideline of ExecuTorch, clone and install ExecuTorch locally.
 
 ```bash
 git clone -b release/0.4 https://github.com/pytorch/executorch.git
