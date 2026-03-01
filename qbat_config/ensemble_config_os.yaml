@@ -1,0 +1,329 @@
+models:
+  - name: Openstack_e3_k1_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l3_b32.pte
+    threshold: 0.018069504125416656
+
+  - name: Openstack_e3_k1_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l3_b64.pte
+    threshold: 0.025898398105800226
+
+  - name: Openstack_e3_k1_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l3_b96.pte
+    threshold: 0.03079617276340746
+
+  - name: Openstack_e3_k1_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l6_b32.pte
+    threshold: 0.023298466877639423
+
+  - name: Openstack_e3_k1_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l6_b64.pte
+    threshold: 0.0382625579953211
+
+  - name: Openstack_e3_k1_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l6_b96.pte
+    threshold: 0.035654228475690164
+
+  - name: Openstack_e3_k1_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l8_b32.pte
+    threshold: 0.032769420802593326
+
+  - name: Openstack_e3_k1_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l8_b64.pte
+    threshold: 0.05065196389854022
+
+  - name: Openstack_e3_k1_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k1_l8_b96.pte
+    threshold: 0.03460473818182952
+
+  - name: Openstack_e3_k3_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l3_b32.pte
+    threshold: 0.06318314784765257
+
+  - name: Openstack_e3_k3_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l3_b64.pte
+    threshold: 0.04482176098823553
+
+  - name: Openstack_e3_k3_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l3_b96.pte
+    threshold: 0.06560380232334408
+
+  - name: Openstack_e3_k3_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l6_b32.pte
+    threshold: 0.03769891098141686
+
+  - name: Openstack_e3_k3_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l6_b64.pte
+    threshold: 0.053600660705567245
+
+  - name: Openstack_e3_k3_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l6_b96.pte
+    threshold: 0.0775091585278532
+
+  - name: Openstack_e3_k3_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l8_b32.pte
+    threshold: 0.05872194790840152
+
+  - name: Openstack_e3_k3_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l8_b64.pte
+    threshold: 0.041580599910021256
+
+  - name: Openstack_e3_k3_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k3_l8_b96.pte
+    threshold: 0.06264206935167689
+
+  - name: Openstack_e3_k5_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l3_b32.pte
+    threshold: 0.044696787205339275
+
+  - name: Openstack_e3_k5_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l3_b64.pte
+    threshold: 0.0749268469810552
+
+  - name: Openstack_e3_k5_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l3_b96.pte
+    threshold: 0.10048860256076123
+
+  - name: Openstack_e3_k5_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l6_b32.pte
+    threshold: 0.04267860399186643
+
+  - name: Openstack_e3_k5_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l6_b64.pte
+    threshold: 0.08557430981397678
+
+  - name: Openstack_e3_k5_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l6_b96.pte
+    threshold: 0.11628561030030679
+
+  - name: Openstack_e3_k5_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l8_b32.pte
+    threshold: 0.12300170961022394
+
+  - name: Openstack_e3_k5_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l8_b64.pte
+    threshold: 0.0954680319249632
+
+  - name: Openstack_e3_k5_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e3_k5_l8_b96.pte
+    threshold: 0.04858033207356957
+
+  - name: Openstack_e6_k1_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l3_b32.pte
+    threshold: 0.0015629542808048478
+
+  - name: Openstack_e6_k1_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l3_b64.pte
+    threshold: 0.03169260049462482
+
+  - name: Openstack_e6_k1_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l3_b96.pte
+    threshold: 0.02188185368329363
+
+  - name: Openstack_e6_k1_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l6_b32.pte
+    threshold: 0.0097861319720748
+
+  - name: Openstack_e6_k1_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l6_b64.pte
+    threshold: 0.0416734952569008
+
+  - name: Openstack_e6_k1_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l6_b96.pte
+    threshold: 0.012333816938847341
+
+  - name: Openstack_e6_k1_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l8_b32.pte
+    threshold: 0.01906435552239456
+
+  - name: Openstack_e6_k1_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l8_b64.pte
+    threshold: 0.1075951327919962
+
+  - name: Openstack_e6_k1_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k1_l8_b96.pte
+    threshold: 0.06148147167265637
+
+  - name: Openstack_e6_k3_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l3_b32.pte
+    threshold: 0.03296933837533077
+
+  - name: Openstack_e6_k3_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l3_b64.pte
+    threshold: 0.043610054782033766
+
+  - name: Openstack_e6_k3_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l3_b96.pte
+    threshold: 0.06055384637117479
+
+  - name: Openstack_e6_k3_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l6_b32.pte
+    threshold: 0.03161406678855434
+
+  - name: Openstack_e6_k3_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l6_b64.pte
+    threshold: 0.1365899238348111
+
+  - name: Openstack_e6_k3_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l6_b96.pte
+    threshold: 0.1618895507693307
+
+  - name: Openstack_e6_k3_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l8_b32.pte
+    threshold: 0.054884904530644735
+
+  - name: Openstack_e6_k3_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l8_b64.pte
+    threshold: 0.05207843047380484
+
+  - name: Openstack_e6_k3_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k3_l8_b96.pte
+    threshold: 0.11760857949257192
+
+  - name: Openstack_e6_k5_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l3_b32.pte
+    threshold: 0.04056652200222078
+
+  - name: Openstack_e6_k5_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l3_b64.pte
+    threshold: 0.05002413659393945
+
+  - name: Openstack_e6_k5_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l3_b96.pte
+    threshold: 0.2256415974021191
+
+  - name: Openstack_e6_k5_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l6_b32.pte
+    threshold: 0.08787575894594919
+
+  - name: Openstack_e6_k5_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l6_b64.pte
+    threshold: 0.11285981063246767
+
+  - name: Openstack_e6_k5_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l6_b96.pte
+    threshold: 0.04619344100952554
+
+  - name: Openstack_e6_k5_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l8_b32.pte
+    threshold: 0.06615430977940731
+
+  - name: Openstack_e6_k5_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l8_b64.pte
+    threshold: 0.13650403152704316
+
+  - name: Openstack_e6_k5_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e6_k5_l8_b96.pte
+    threshold: 0.11748210145235098
+
+  - name: Openstack_e10_k1_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l3_b32.pte
+    threshold: 0.001621053754445277
+
+  - name: Openstack_e10_k1_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l3_b64.pte
+    threshold: 0.01841260805577067
+
+  - name: Openstack_e10_k1_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l3_b96.pte
+    threshold: 0.023452372933926366
+
+  - name: Openstack_e10_k1_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l6_b32.pte
+    threshold: 0.030066723342239872
+
+  - name: Openstack_e10_k1_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l6_b64.pte
+    threshold: 0.0811963617444052
+
+  - name: Openstack_e10_k1_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l6_b96.pte
+    threshold: 0.022455831219256164
+
+  - name: Openstack_e10_k1_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l8_b32.pte
+    threshold: 0.038922910231352026
+
+  - name: Openstack_e10_k1_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l8_b64.pte
+    threshold: 0.01032582075521363
+
+  - name: Openstack_e10_k1_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k1_l8_b96.pte
+    threshold: 0.07859792599678048
+
+  - name: Openstack_e10_k3_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l3_b32.pte
+    threshold: 0.02155070570558365
+
+  - name: Openstack_e10_k3_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l3_b64.pte
+    threshold: 0.034597701591253964
+
+  - name: Openstack_e10_k3_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l3_b96.pte
+    threshold: 0.09402083911895802
+
+  - name: Openstack_e10_k3_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l6_b32.pte
+    threshold: 0.06527535663843188
+
+  - name: Openstack_e10_k3_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l6_b64.pte
+    threshold: 0.11585166103840137
+
+  - name: Openstack_e10_k3_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l6_b96.pte
+    threshold: 0.11288296157717764
+
+  - name: Openstack_e10_k3_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l8_b32.pte
+    threshold: 0.06870936787128505
+
+  - name: Openstack_e10_k3_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l8_b64.pte
+    threshold: 0.08296245067715663
+
+  - name: Openstack_e10_k3_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k3_l8_b96.pte
+    threshold: 0.13610786159038546
+
+  - name: Openstack_e10_k5_l3_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l3_b32.pte
+    threshold: 0.04063900943100471
+
+  - name: Openstack_e10_k5_l3_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l3_b64.pte
+    threshold: 0.06038203040361446
+
+  - name: Openstack_e10_k5_l3_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l3_b96.pte
+    threshold: 0.09554500585794537
+
+  - name: Openstack_e10_k5_l6_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l6_b32.pte
+    threshold: 0.24483758518695958
+
+  - name: Openstack_e10_k5_l6_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l6_b64.pte
+    threshold: 0.1100370659172559
+
+  - name: Openstack_e10_k5_l6_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l6_b96.pte
+    threshold: 0.17749000508786061
+
+  - name: Openstack_e10_k5_l8_b32
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l8_b32.pte
+    threshold: 0.1219148130893712
+
+  - name: Openstack_e10_k5_l8_b64
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l8_b64.pte
+    threshold: 0.08714548138976114
+
+  - name: Openstack_e10_k5_l8_b96
+    pte_path: ./checkpoints/os/Openstack_e10_k5_l8_b96.pte
+    threshold: 0.19129492148161137
+
+data:
+  filename: ./checkpoints/os/OpenStack_test_data_w100_len10.csv
+  output_dir: ./ensemble_results/os
+  label: ./checkpoints/os/OpenStack_label_w100_len10.csv
