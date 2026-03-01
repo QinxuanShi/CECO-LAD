@@ -1,4 +1,5 @@
 # Overview
+
 In this repository, you will find a Python implementation of CECO-LAD: a Cloud-Edge Collaboration Framework for Unsupervised Log Anomaly Detection.
 
 # Introduction to CECO-LAD
@@ -13,7 +14,7 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
 - NVIDIA driver 460.73.01
 - CUDA 11.2
 - Python 3.10
-- PyTorch 
+- PyTorch
 
 ## Installation
 
@@ -35,17 +36,49 @@ The trained BAT and Q-BAT models can be downloaded from the [Google Drive](https
 
 # Experiment
 
+## BAT Model Training
+
+For BAT, it is bagging based ensemble, we use 81 base models for bagging in CECO-LAD. To ensure robustness, we use four parameters:num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./bat_config.
+
+```
+# To train BAT model
+python train_bat.py
+
+```
+
 ## Edge-based Q-BAT
 
-Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.4/) (version 0.4) for quantization and lower the model for Q-BAT at the edge.
+Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering the model for Q-BAT at the edge.
 
-According to the guideline of ExecuTorch, clone and install ExecuTorch locally.
+According to the guideline of ExecuTorch, clone and install ExecuTorch locally. (The executorch folder has already been downloaded here)
 
 ```bash
-git clone -b release/0.4 https://github.com/pytorch/executorch.git
+git clone --branch v0.3.0 https://github.com/pytorch/executorch.git
+```
+
+```
+cd executorch
+
+# Update and pull submodules
+git submodule sync
+git submodule update --init
+
+# Install ExecuTorch pip package and its dependencies, as well as
+# development tools like CMake.
+# If developing on a Mac, make sure to install the Xcode Command Line Tools first.
+./install_requirements.sh
+```
+
+```
+# Clean and configure the CMake build system. Compiled programs will appear in the executorch/cmake-out directory we create here.
+(rm -rf cmake-out && mkdir cmake-out && cd cmake-out && cmake ..)
+
+# Build the executor_runner target
+cmake --build cmake-out --target executor_runner -j9
 ```
 
 ## Demo
+
 We provide the experiment scripts of all benchmarks under the folder ./scripts. You can reproduce the experiment results as follows:
 
 ```bash
@@ -60,5 +93,3 @@ python ensemble_train.py
 
 python test.py
 ```
-
-
