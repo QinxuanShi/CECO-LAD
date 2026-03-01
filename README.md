@@ -10,11 +10,11 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
 
 ## Configuration
 
-- Ubuntu 20.04
-- NVIDIA driver 460.73.01
-- CUDA 11.2
+- Ubuntu 24.04
+- NVIDIA driver 580.126.09
+- CUDA 12.4
 - Python 3.10
-- PyTorch
+- PyTorch 2.4.0
 
 ## Installation
 
