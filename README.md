@@ -26,16 +26,16 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
 
 ## Installation
 
-This code requires the packages listed in requirements.txt. The conda environments are recommended to run this code:
+This code requires the packages listed in environment.yml and requirements.txt. The conda environments are recommended to run this code:
 
 ```bash
-conda create -f ./environment/cloud/environment.yml
+conda env create -f ./environment/cloud/environment.yml
 conda activate ceco-lad-cloud
 pip install -r ./environment/cloud/requirements.txt
 ```
 
 ```bash
-conda create -f ./environment/edge/environment.yml
+conda env create -f ./environment/edge/environment.yml
 conda activate ceco-lad-edge
 pip install -r ./environment/edge/requirements.txt
 ```
