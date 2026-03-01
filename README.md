@@ -26,17 +26,23 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
 
 ## Installation
 
-This code requires the packages listed in requirements.txt. A conda environment is recommended to run this code:
+This code requires the packages listed in requirements.txt. The conda environments are recommended to run this code:
 
 ```bash
-conda create -f ./environment/environment.yml
-conda activate ceco-lad
-pip install -r ./environment/requirements.txt
+conda create -f ./environment/cloud/environment.yml
+conda activate ceco-lad-cloud
+pip install -r ./environment/cloud/requirements.txt
+```
+
+```bash
+conda create -f ./environment/edge/environment.yml
+conda activate ceco-lad-edge
+pip install -r ./environment/edge/requirements.txt
 ```
 
 ## Download Data
 
-CECO-LAD and other baseline methods are implemented on [HDFS](https://github.com/logpai/loghub/tree/master/HDFS), [OpenStack](https://github.com/logpai/loghub/tree/master/OpenStack), and [BGL](https://github.com/logpai/loghub/tree/master/BGL) dataset. These datasets are available on [LogHub](https://github.com/logpai/loghub). You can also obtain these datasets that are well pre-processed from [Google Drive](https://drive.google.com/drive/folders/1iBBTYIx1DaEV5lDh6dO7L6Klb15wUHcI?usp=drive_link).
+CECO-LAD and other baseline methods are implemented on [HDFS](https://github.com/logpai/loghub/tree/master/HDFS), [OpenStack](https://github.com/logpai/loghub/tree/master/OpenStack), and [BGL](https://github.com/logpai/loghub/tree/master/BGL) datasets. These datasets are available on [LogHub](https://github.com/logpai/loghub). You can also obtain these datasets that are well pre-processed from [Google Drive](https://drive.google.com/drive/folders/1iBBTYIx1DaEV5lDh6dO7L6Klb15wUHcI?usp=drive_link).
 
 ## Download Trained Model
 
