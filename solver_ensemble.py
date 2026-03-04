@@ -5,7 +5,7 @@ import numpy as np
 import os
 import time
 from utils.utils import *
-from model.AnomalyTransformer import AnomalyTransformer
+from model.EMAT import EMAT
 from data_factory.data_loader import get_loader_segment
 import logging
 import datetime
@@ -94,7 +94,7 @@ class Solver(object):
         self.criterion = nn.MSELoss()
 
     def build_model(self):
-        self.model = AnomalyTransformer(win_size=self.win_size, enc_in=self.input_c, c_out=self.output_c, e_layers=self.e_layer_num)
+        self.model = EMAT(win_size=self.win_size, enc_in=self.input_c, c_out=self.output_c, e_layers=self.e_layer_num)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr)
 
         if torch.cuda.is_available():

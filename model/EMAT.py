@@ -54,10 +54,10 @@ class Encoder(nn.Module):
         return x, series_list, prior_list, sigma_list
 
 
-class AnomalyTransformer(nn.Module):
+class EMAT(nn.Module):
     def __init__(self, win_size, enc_in, c_out, d_model=512, n_heads=8, e_layers=3, d_ff=512,
                  dropout=0.0, activation='gelu', output_attention=True):
-        super(AnomalyTransformer, self).__init__()
+        super(EMAT, self).__init__()
         self.output_attention = output_attention
 
         # Encoding
