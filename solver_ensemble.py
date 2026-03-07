@@ -9,6 +9,33 @@ from model.EMAT import EMAT
 from data_factory.data_loader import get_loader_segment
 import logging
 import datetime
+from sklearn.mixture import GaussianMixture
+
+
+def set_thresh_em(energy, n_components, covariance_type, max_iter, init_params, n_init):
+        gm = GaussianMixture(n_components=n_components, covariance_type=covariance_type, max_iter=max_iter, init_params=init_params, n_init=n_init, random_state=42).fit(energy)
+        pred = gm.predict(energy)
+        return pred
+
+
+def get_anomaly_ratio(em_pred):
+
+        unique, counts = np.unique(em_pred, return_counts=True)
+        total = len(em_pred)
+
+        # Create a dictionary: label -> percentage
+        label_percentages = {label: (count / total) * 100 for label, count in zip(unique, counts)}
+
+        # Sort by percentage descending
+        sorted_percentages = sorted(label_percentages.items(), key=lambda x: x[1], reverse=True)
+
+        # Log counts and percentages
+        logging.info(f"Label counts: {dict(zip(unique, counts))}")
+        for label, percentage in sorted_percentages:
+                logging.info(f"Label {label}: {percentage:.6f}%")
+
+        return sorted_percentages
+
 
 
 def my_kl_loss(p, q):
@@ -59,7 +86,6 @@ class EarlyStopping:
     def save_checkpoint(self, val_loss, val_loss2, model, path, hyperparameter):
         if self.verbose:
             logging.info(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
-        # logging.info(path, hyperparameter)
         # num_epochs, k, e_layer_num, batch_size
         fileparam = f'e{hyperparameter[0]}_k{hyperparameter[1]}_l{hyperparameter[2]}_b{hyperparameter[3]}'
         torch.save(model.state_dict(), os.path.join(path, str(self.dataset) + '_' + fileparam + '_checkpoint.pth'))
@@ -152,8 +178,6 @@ class Solver(object):
             epoch_time = time.time()
             self.model.train()
             for i, (input_data, labels) in enumerate(self.train_loader):
-                # print(f"sample {i}.")
-                
                 self.optimizer.zero_grad()
                 iter_count += 1
                 input = input_data.float().to(self.device)
@@ -261,7 +285,16 @@ class Solver(object):
         attens_energy = np.concatenate(attens_energy, axis=0).reshape(-1)
         train_energy = np.array(attens_energy)
 
+        em_pred = set_thresh_em(train_energy.reshape(-1, 1), 7, 'tied', 100, 'k-means++', 10)
+        train_pred = get_anomaly_ratio(em_pred)
+        normal_ratio = train_pred[0][1]
+        logging.info(f"Normal data ratio: {normal_ratio}")
+        anomaly_ratio = 100 - normal_ratio
+        logging.info(f"Abnormal data ratio: {anomaly_ratio}")
 
+        # use train_energy to get the anomaly score, also need to use EM here.
+        thresh = np.percentile(train_energy, normal_ratio) 
+        logging.info(f"Threshold : {thresh}")
 
         # Evaluation on the test set
         test_labels = []
