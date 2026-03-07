@@ -248,76 +248,6 @@ class Preprocessor(object):
         return self.sequence(data, labels=labels, verbose=verbose)
 
 
-    def json(self, path, labels=None, verbose=False):
-        """Preprocess data from json file.
-
-            Note
-            ----
-            json preprocessing will become available in a future version.
-
-            Parameters
-            ----------
-            path : string
-                Path to input file from which to read data.
-
-            labels : int or array-like of shape=(n_samples,), optional
-                If a int is given, label all sequences with given int. If an
-                array-like is given, use the given labels for the data in file.
-                Note: will overwrite any 'label' data in input file.
-
-            verbose : boolean, default=False
-                If True, prints progress in transforming input to sequences.
-
-            Returns
-            -------
-            events : torch.Tensor of shape=(n_samples,)
-                Events in data.
-
-            context : torch.Tensor of shape=(n_samples, context_length)
-                Context events for each event in events.
-
-            labels : torch.Tensor of shape=(n_samples,)
-                Labels will be None if no labels parameter is given, and if data
-                does not contain any 'labels' column.
-            """
-        raise NotImplementedError("Parsing '.json' not yet implemented.")
-
-
-    def ndjson(self, path, labels=None, verbose=False):
-        """Preprocess data from ndjson file.
-
-            Note
-            ----
-            ndjson preprocessing will become available in a future version.
-
-            Parameters
-            ----------
-            path : string
-                Path to input file from which to read data.
-
-            labels : int or array-like of shape=(n_samples,), optional
-                If a int is given, label all sequences with given int. If an
-                array-like is given, use the given labels for the data in file.
-                Note: will overwrite any 'label' data in input file.
-
-            verbose : boolean, default=False
-                If True, prints progress in transforming input to sequences.
-
-            Returns
-            -------
-            events : torch.Tensor of shape=(n_samples,)
-                Events in data.
-
-            context : torch.Tensor of shape=(n_samples, context_length)
-                Context events for each event in events.
-
-            labels : torch.Tensor of shape=(n_samples,)
-                Labels will be None if no labels parameter is given, and if data
-                does not contain any 'labels' column.
-            """
-        raise NotImplementedError("Parsing '.ndjson' not yet implemented.")
-
-
     def text(self, path, nrows=None, labels=None, verbose=False):
         """Preprocess data from text file.
 
@@ -420,7 +350,7 @@ if __name__ == "__main__":
     ########################################################################
 
     # Allowed extensions
-    ALLOWED_EXTENSIONS = {'csv', 'json', 'ndjson', 'txt', 'text'}
+    ALLOWED_EXTENSIONS = {'csv', 'txt', 'text'}
 
     # Infer type
     if args.type == 'auto':
@@ -447,10 +377,6 @@ if __name__ == "__main__":
     # Preprocess file
     if args.type == 'csv':
         events, context, labels = preprocessor.csv(args.file)
-    elif args.type == 'json':
-        events, context, labels = preprocessor.json(args.file)
-    elif args.type == 'ndjson':
-        events, context, labels = preprocessor.ndjson(args.file)
     elif args.type == 'txt' or args.type == 'text':
         events, context, labels = preprocessor.text(args.file)
     else:

@@ -82,57 +82,5 @@ def system_monitor_info(start_time, end_time, path):
     return np.average(cpu_l), np.average(memory_l), np.average(temperature_l)
 
 if __name__ == "__main__":
-    start_time, end_time, avg_cpu_proc, avg_mem_p_proc, avg_mem_b_proc = process_monitor_info('/home/qinxuan.shi/Desktop/process_parallel.ndjson')
-    avg_cpu_sys, avg_mem_sys, avg_temp_sys = system_monitor_info(start_time, end_time, '/home/qinxuan.shi/Desktop/system_parallel.ndjson')
-
-#     folder = 'monitor_results'
-#     data_source_folders = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
-
-#     model_types = ['executorch_os_A8W4', 'executorch_os_A8W8', 'executorch_os_W8only']
-#     metric_columns = []
-#     system_columns = []
-
-#     for model in model_types:
-#         metric_columns.extend([f"{model}_cpu", f"{model}_mem_p", f"{model}_mem_b"])
-#         system_columns.extend([f"{model}_cpu", f"{model}_mem", f"{model}_temp"])
-
-#     # Final DataFrame rows
-#     all_rows = []
-#     system_rows = []
-
-#     for data_source in data_source_folders:
-#         data_source_path = folder + "/" + data_source
-#         iteration_folders = [f for f in os.listdir(data_source_path) if os.path.isdir(os.path.join(data_source_path, f))]
-
-#         for iter in iteration_folders:
-#             row = {"data_source": data_source}
-#             system_row = {"data_source": data_source}
-            
-#             metrics = []
-#             system_metrics = []
-
-#             for model_type in model_types:
-#                 process_path = data_source_path + "/" + iter + f"/process_{model_type}.ndjson"
-#                 system_path = data_source_path + "/" + iter + f"/system_{model_type}.ndjson"
-                
-#                 if os.path.exists(process_path):
-#                     start_time, end_time, avg_cpu_proc, avg_mem_p_proc, avg_mem_b_proc = process_monitor_info(process_path)
-#                     avg_cpu_sys, avg_mem_sys, avg_temp_sys = system_monitor_info(start_time, end_time, system_path)
-
-#                     metrics.extend([avg_cpu_proc, avg_mem_p_proc, avg_mem_b_proc])
-#                     system_metrics.extend([avg_cpu_sys, avg_mem_sys, avg_temp_sys])
-#                 else:
-#                     metrics.extend([None, None, None])
-#                     system_metrics.extend([None, None, None])
-#             row.update(dict(zip(metric_columns, metrics)))
-#             system_row.update(dict(zip(system_columns, system_metrics)))
-#             all_rows.append(row)
-#             system_rows.append(system_row)
-
-# df = pd.DataFrame(all_rows, columns=["data_source"] + metric_columns)
-# df_sys = pd.DataFrame(system_rows, columns=["data_source"] + system_columns)
-
-# output_csv = folder + "/combined_process_data.csv"
-# output_csv_sys = folder + "/combined_system_data.csv"
-# df.to_csv(output_csv, index=False)
-# df_sys.to_csv(output_csv_sys, index=False)
+    start_time, end_time, avg_cpu_proc, avg_mem_p_proc, avg_mem_b_proc = process_monitor_info('./consumption_monitor/process_parallel.ndjson')
+    avg_cpu_sys, avg_mem_sys, avg_temp_sys = system_monitor_info(start_time, end_time, './consumption_monitor/system_parallel.ndjson')

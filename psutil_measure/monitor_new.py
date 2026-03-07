@@ -30,38 +30,15 @@ def get_new_processes(old_processes):
     return current_processes, new_processes
 
 def monitor_process(file_name, data_source, iteration):
-    # dict of processes ('pid: name') to monitor
     monitor_list = {}
     
     # Path to the directory and file
-    folder_path = './em_at_consumption/deeplog/' + data_source
+    folder_path = './consumption_monitor/' + data_source
     process_store = os.path.join(folder_path, 'process_'+ file_name + '.ndjson')
     system_store = os.path.join(folder_path, 'system_'+ file_name + '.ndjson')
-
-    # Create the directory if it doesn't exist
-    # os.makedirs(folder_path, exist_ok=True)
-
-    # process_store = data_source + '/' + iteration + '/process_'+ file_name + '.ndjson'
-    # system_store = data_source + '/' + iteration + '/system_'+ file_name + '.ndjson'
     
     print(process_store)
     print(system_store)
-    
-    # process_store = 'processes_A8W8_os_1.ndjson'
-    # system_store = 'system_A8W8_os_1.ndjson'
-    # process_store = 'processes_A8W4_os_1.ndjson'
-    # system_store = 'system_A8W4_os_1.ndjson'
-    # process_store = 'processes_W8only_os_1.ndjson'
-    # system_store = 'system_W8only_os_1.ndjson'
-    # process_store = 'origin_processes_A8W8.ndjson'
-    # system_store = 'origin_system_A8W8.ndjson'
-
-    # process_store = 'processes_A8W8_hdfs_1.ndjson'
-    # system_store = 'system_A8W8_hdfs_1.ndjson'
-    # process_store = 'processes_A8W4_hdfs_1.ndjson'
-    # system_store = 'system_A8W4_hdfs_1.ndjson'
-    # process_store = 'processes_W8only_hdfs_1.ndjson'
-    # system_store = 'system_W8only_hdfs_1.ndjson'
 
     old_processes = get_current_processes()
 
@@ -134,7 +111,7 @@ def monitor_process(file_name, data_source, iteration):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--file_name', type=str, default='executorch_os_W8only')
+    parser.add_argument('--file_name', type=str, default='executorch_os')
     parser.add_argument('--data_source', type=str, default='os')
     parser.add_argument('--iteration', type=str, default="1")
 
