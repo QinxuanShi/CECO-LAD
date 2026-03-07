@@ -8,7 +8,7 @@ dataset: "BGL"
 mode: "test"
 data_path: "dataset/BGL"
 model_save_path: "checkpoints/ensemble_bgl"
-anormly_ratio: 0.8
+anormly_ratio: 1.0
 
 num_epochs: [3, 6, 10]
 k: [3, 4, 5]
