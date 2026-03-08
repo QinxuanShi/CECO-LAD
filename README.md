@@ -91,11 +91,21 @@ cmake --build cmake-out --target executor_runner -j9
 
 ### Model conversion
 
-### hh
+For Q-BAT model, we utilize executorch and torchao for edge optimization and quantization. To quantize the model and convert from .pth to .pte file, please run the following:
+
+```
+python convert_model.py
+```
 
 After downloading and setting up the executorch, we need to customize the executor_runner to enable the custormized input data.
 
-###
+### Model Inference
+
+To execute the Q-BAT model, run the scripts:
+
+```
+./execute_qbat.sh
+```
 
 ## Demo
 
