@@ -68,9 +68,9 @@ python test_ensemble.py --voting majority
 
 ## Edge-based Q-BAT
 
-Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering the model for Q-BAT at the edge.
+Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering the model for Q-BAT at the edge. We have already included the executorch in our project.
 
-According to the guideline of ExecuTorch, clone and install ExecuTorch locally.
+If you want to try by your self for the start, according to the guideline of ExecuTorch, you can clone and install ExecuTorch locally.
 
 ```bash
 cd Edge
@@ -112,12 +112,12 @@ cmake --build cmake-out --target executor_runner -j9
 For Q-BAT model, we utilize executorch and torchao for edge optimization and quantization. To quantize the model and convert from .pth to .pte file, please run the following:
 
 ```bash
-python convert_model.py
+python convert_torchao.py --epoch 3 --k 3 --enlayer 3 --batch_size 32
 ```
 
 ### Model Inference
 
-To save time, the preprocessed datasets for executing at the edge can be downloaded from the [Google Drive](https://drive.google.com/drive/folders/1pBNMsucvw1eypn5gC_QvOzeRnMgTzLq2?usp=drive_link).
+To save time, both the trained Q-BAT models and the preprocessed datasets for executing at the edge can be downloaded from the [Google Drive](https://drive.google.com/drive/folders/1pBNMsucvw1eypn5gC_QvOzeRnMgTzLq2?usp=drive_link).
 
 To execute the Q-BAT model, run the scripts:
 
