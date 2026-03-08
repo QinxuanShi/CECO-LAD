@@ -8,6 +8,10 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
 
 ![CECO-LAD](pictures/framework.png)
 
+<p align="center">
+  <img src="pictures/framework.png" width="700">
+</p>
+
 # Get Started
 
 ## Configuration
