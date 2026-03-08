@@ -59,6 +59,8 @@ The trained BAT and Q-BAT models can be downloaded from the [Google Drive](https
 For BAT, it is bagging based ensemble, we use 81 base models for bagging in CECO-LAD. To ensure robustness, we use four parameters:num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
 
 ```bash
+cd Cloud
+
 # To train BAT model
 python train_ensemble.py
 

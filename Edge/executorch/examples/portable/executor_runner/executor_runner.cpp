@@ -18,10 +18,16 @@
  */
 
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include <string>
 #include <memory>
+#include <chrono>
 
 #include <gflags/gflags.h>
-
+#include <executorch/runtime/core/evalue.h>
+#include <executorch/runtime/core/exec_aten/testing_util/tensor_factory.h>
 #include <executorch/extension/data_loader/file_data_loader.h>
 #include <executorch/extension/evalue_util/print_evalue.h>
 #include <executorch/extension/runner_util/inputs.h>
@@ -30,23 +36,41 @@
 #include <executorch/runtime/platform/log.h>
 #include <executorch/runtime/platform/runtime.h>
 
-static uint8_t method_allocator_pool[4 * 1024U * 1024U]; // 4 MB
+static uint8_t method_allocator_pool[36 * 1024U * 1024U]; // 4 MB
 
 DEFINE_string(
     model_path,
     "model.pte",
     "Model serialized in flatbuffer format.");
 
+DEFINE_string(
+    data_path,
+    "os_thre_W150B64L6_sample.txt",
+    "Input data for executorch program.");
+    
+DEFINE_string(
+    model_name,
+    "Openstack_e3_k1_l8_b64",
+    "Input data for executorch program.");
+    
+DEFINE_int32(
+    win_size, 
+    100, 
+    "Window size for executorch program.");
+
 using namespace torch::executor;
 using torch::executor::util::FileDataLoader;
+using torch::executor::EValue;
+using torch::executor::testing::TensorFactory;
 
 int main(int argc, char** argv) {
+  using clock = std::chrono::steady_clock;
   runtime_init();
 
   gflags::ParseCommandLineFlags(&argc, &argv, true);
-  if (argc != 1) {
+  if (argc > 2) {
     std::string msg = "Extra commandline args:";
-    for (int i = 1 /* skip argv[0] (program name) */; i < argc; i++) {
+    for (int i = 2 /* skip argv[0] (program name) */; i < argc; i++) {
       msg += std::string(" ") + argv[i];
     }
     ET_LOG(Error, "%s", msg.c_str());
@@ -154,31 +178,129 @@ int main(int argc, char** argv) {
   // Allocate input tensors and set all of their elements to 1. The `inputs`
   // variable owns the allocated memory and must live past the last call to
   // `execute()`.
-  auto inputs = util::prepare_input_tensors(*method);
-  ET_CHECK_MSG(
-      inputs.ok(),
-      "Could not prepare inputs: 0x%" PRIx32,
-      (uint32_t)inputs.error());
-  ET_LOG(Info, "Inputs prepared.");
 
-  // Run the model.
-  Error status = method->execute();
-  ET_CHECK_MSG(
-      status == Error::Ok,
-      "Execution of method %s failed with status 0x%" PRIx32,
-      method_name,
-      (uint32_t)status);
-  ET_LOG(Info, "Model executed successfully.");
+  TensorFactory<ScalarType::Float> tf;
+  
+  std::vector<float> data_test;
+  std::string line;
 
-  // Print the outputs.
-  std::vector<EValue> outputs(method->outputs_size());
-  ET_LOG(Info, "%zu outputs: ", outputs.size());
-  status = method->get_outputs(outputs.data(), outputs.size());
-  ET_CHECK(status == Error::Ok);
-  // Print the first and last 100 elements of long lists of scalars.
-  std::cout << torch::executor::util::evalue_edge_items(100);
-  for (int i = 0; i < outputs.size(); ++i) {
-    std::cout << "Output " << i << ": " << outputs[i] << std::endl;
+  const char* data_path = FLAGS_data_path.c_str();
+  
+  const char* model_name = FLAGS_model_name.c_str();
+  
+  std::cout << data_path << std::endl;
+  
+  std::ifstream file(data_path);
+  
+  std::string x_file = std::string("./ensemble_edge/output/output_x_") + model_name + ".txt";
+  std::string s_file = std::string("./ensemble_edge/output/output_series_") + model_name + ".txt";
+  std::string p_file = std::string("./ensemble_edge/output/output_prior_") + model_name + ".txt";
+  
+  std::ofstream outFile(x_file, std::ios::app);
+  std::ostringstream oss;
+  std::ofstream outFile_series(s_file, std::ios::app);
+  std::ostringstream oss_series;
+  std::ofstream outFile_prior(p_file, std::ios::app);
+  std::ostringstream oss_prior;
+  // std::cout << torch::executor::util::evalue_edge_items(500);
+  if (!outFile) {
+    std::cerr << "Error opening file for writing!" << std::endl;
+    return 1;
+  }
+  int count = 0;
+  int sample_num = 0;
+  int window = FLAGS_win_size; 
+  if (file.is_open()) {
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        std::string token;
+        while (std::getline(iss, token, ' ')) {
+            try {
+              float value = std::stof(token); // Convert string to float
+              data_test.push_back(value);
+              count++;
+              if(count == 1*window*10){
+                sample_num++;
+                std::cout << "Float data read from file:\n";
+                std::cout << "current sample number is " << sample_num << std::endl;
+
+                // set input to method and predict
+                EValue value_from_input(tf.make({1, window, 10}, data_test));
+
+                Error status_t = method->set_input(value_from_input, 0);
+                ET_CHECK(status_t == Error::Ok);
+                ET_LOG(Info, "Inputs set successfully.");
+                // EValue input_check = method->get_input(test_input_size-1);
+                // std::cout << "input check " << input_check << std::endl;
+
+                // auto inputs = util::prepare_input_tensors(*method);
+                // ET_CHECK_MSG(
+                //     inputs.ok(),
+                //     "Could not prepare inputs: 0x%" PRIx32,
+                //     (uint32_t)inputs.error());
+                // ET_LOG(Info, "Inputs prepared.");
+
+                auto t0 = clock::now();
+
+                // Run the model.
+                Error status = method->execute();
+                ET_CHECK_MSG(
+                    status == Error::Ok,
+                    "Execution of method %s failed with status 0x%" PRIx32,
+                    method_name,
+                    (uint32_t)status);
+                    
+                auto t1 = clock::now();
+                auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+                std::cout << "Elapsed: " << ms << " ms\n";
+                
+                ET_LOG(Info, "Model executed successfully.");
+
+                // Print the outputs.
+                std::vector<EValue> outputs(method->outputs_size());
+                ET_LOG(Info, "%zu outputs: ", outputs.size());
+                status = method->get_outputs(outputs.data(), outputs.size());
+                ET_CHECK(status == Error::Ok);
+                // Print the first and last 500 elements of long lists of scalars.
+                // std::cout << torch::executor::util::evalue_edge_items(500);
+                
+                oss.str("");
+                oss.clear();
+                oss << torch::executor::util::evalue_edge_items(1*window*10/2) << outputs[0];
+                outFile << oss.str();
+                
+                for (int i = 1; i < 4; ++i) {
+                  oss_series.str("");  // Clear the stream
+                  oss_series.clear();
+                  oss_series << torch::executor::util::evalue_edge_items(8*window*window/2) << outputs[i];
+                  outFile_series << oss_series.str();
+                }
+                
+                for (int j = 4; j < 7; ++j) {
+                  oss_prior.str(""); // Clear the stream
+                  oss_prior.clear();
+                  oss_prior << torch::executor::util::evalue_edge_items(8*window*window/2) << outputs[j];
+                  outFile_prior << oss_prior.str();
+                }
+
+                // reset
+                count = 0;
+                data_test.clear();
+              }
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Invalid argument: " << e.what() << std::endl;
+            } catch (const std::out_of_range& e) {
+                std::cerr << "Out of range: " << e.what() << std::endl;
+            }
+        }
+    }
+    
+    file.close();
+    outFile.close();
+    outFile_series.close();
+    outFile_prior.close();
+  } else {
+      ET_LOG(Info, "Unable to open file.");
   }
 
   return 0;
