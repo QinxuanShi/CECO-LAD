@@ -46,7 +46,7 @@ pip install -r ./environment/edge/requirements.txt
 
 ## Download Data
 
-CECO-LAD and other baseline methods are implemented on [HDFS](https://github.com/logpai/loghub/tree/master/HDFS), [OpenStack](https://github.com/logpai/loghub/tree/master/OpenStack), and [BGL](https://github.com/logpai/loghub/tree/master/BGL) datasets. These datasets are available on [LogHub](https://github.com/logpai/loghub). You can also obtain these datasets that are well pre-processed from [Google Drive](https://drive.google.com/drive/folders/1iBBTYIx1DaEV5lDh6dO7L6Klb15wUHcI?usp=drive_link).
+CECO-LAD and other baseline methods are implemented on [HDFS](https://github.com/logpai/loghub/tree/master/HDFS), [OpenStack](https://github.com/logpai/loghub/tree/master/OpenStack), and [BGL](https://github.com/logpai/loghub/tree/master/BGL) datasets. These datasets are available on [LogHub](https://github.com/logpai/loghub). Here we directly put the well-processed datasets here in ./Cloud/dataset.
 
 ## Download Trained Model
 
