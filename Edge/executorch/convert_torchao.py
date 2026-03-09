@@ -1,9 +1,8 @@
 import torch
-import copy
 import argparse
 from torch.export import export, ExportedProgram
 from executorch import exir
-from executorch.exir import EdgeProgramManager, ExecutorchProgramManager, to_edge
+from executorch.exir import EdgeProgramManager, to_edge
 from EMAT_model.EMAT import EMAT
 from torchao.quantization import quantize_, int8_dynamic_activation_int4_weight
 
@@ -17,7 +16,8 @@ def convert(config):
     
     params = 'e' + str(config.num_epochs) + '_k' + str(config.k) + '_l' + str(config.e_layer_num) + '_b' + str(config.batch_size)
     
-    PATH = "change to the path that your store your .pth file"
+    # this path is just an example of the .pth file path
+    PATH = "./Cloud/checkpoints/ensemble_bgl/BGL_e3_k3_l3_b32.pth"
 
     model.load_state_dict(torch.load(PATH, map_location=device, weights_only=True))
     model.eval()
