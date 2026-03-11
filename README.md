@@ -10,6 +10,126 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
   <img src="pictures/framework.png" width="700">
 </p>
 
+# Project Analysis
+
+## Problem Being Solved
+
+Modern systems generate large volumes of log data. Automatically detecting anomalies in these logs is essential for system reliability and security. Two deployment extremes exist:
+
+| Deployment | Pros | Cons |
+|---|---|---|
+| **Cloud only** | High model accuracy, powerful hardware | High latency, bandwidth cost, privacy risk, energy usage |
+| **Edge only** | Low latency, local privacy, low energy | Limited compute, reduced model accuracy |
+
+CECO-LAD resolves this **cloud-edge dilemma** by combining both: a full-precision ensemble runs in the cloud for difficult cases, while a compact quantized model runs on the edge for straightforward ones, with an intelligent router deciding which path each sample takes.
+
+## System Architecture
+
+```
+Raw Logs (HDFS / BGL / OpenStack)
+          │
+          ▼
+  Log Preprocessor
+  (context windows, event-to-ID mapping)
+          │
+          ▼
+  ┌───────────────────────────────────────┐
+  │           INFERENCE PATH              │
+  │                                       │
+  │  ┌─────────────────────────────────┐  │
+  │  │        Edge Device              │  │
+  │  │   Q-BAT (Quantized BAT)         │  │
+  │  │   A8W4 quantization via TorchAO │  │
+  │  │   ExecuTorch C++ runtime (.pte) │  │
+  │  └──────────────┬──────────────────┘  │
+  │                 │ uncertain samples    │
+  │                 ▼                     │
+  │  ┌─────────────────────────────────┐  │
+  │  │   Mahalanobis Distance Router   │  │
+  │  │   (confidence-based routing)    │  │
+  │  └──────────────┬──────────────────┘  │
+  │                 │                     │
+  │                 ▼                     │
+  │  ┌─────────────────────────────────┐  │
+  │  │        Cloud Server             │  │
+  │  │   BAT (Bagging Anomaly Transf.) │  │
+  │  │   81 EMAT models, GPU-optimized │  │
+  │  └─────────────────────────────────┘  │
+  └───────────────────────────────────────┘
+          │
+          ▼
+  Anomaly / Normal prediction
+  + Green-LADE holistic evaluation
+```
+
+## Key Components
+
+### 1. Enhanced Anomaly Transformer (EMAT)
+The base learner for both cloud and edge deployments. EMAT is built on the [Anomaly Transformer](https://arxiv.org/abs/2110.02642) and extends it with:
+- **Triangular causal masking** to model temporal order in log sequences.
+- **Learned sigma parameter** that captures per-sequence uncertainty.
+- **Gaussian prior associations** paired with series temporal associations to measure how far each time step deviates from expected patterns.
+- **Mahalanobis distance scoring** as the anomaly score, making the model sensitive to covariance structure rather than only per-feature variance.
+
+### 2. BAT — Bagging Anomaly Transformer (Cloud)
+An ensemble of 81 independently trained EMAT models produced by a full grid search over 3 values for each of 4 hyperparameters (3⁴ = 81 combinations):
+
+| Hyperparameter | Values |
+|---|---|
+| `num_epochs` | 3, 6, 10 |
+| `k` (loss weight) | 3, 4, 5 |
+| `e_layer_num` (encoder layers) | 3, 6, 8 |
+| `batch_size` | 32, 64, 96 |
+
+Each base model is trained on a bootstrap sample of the training data. At inference time the ensemble uses **majority voting** (≥51% of models vote anomaly) as the default decision rule, with "at-least-one" and "consensus" available as alternatives. Anomaly thresholds for each model are set automatically via a Gaussian Mixture Model (GMM) fitted on reconstruction errors.
+
+### 3. Q-BAT — Quantized BAT (Edge)
+The same 81-model ensemble, but with each EMAT model:
+1. **Quantized** to A8W4 (int8 activations, int4 weights) using [TorchAO](https://github.com/pytorch/ao).
+2. **Exported** to the ExecuTorch `.pte` binary format via `convert_torchao.py`.
+3. **Executed** on the edge device by a customized C++ `executor_runner`, with no Python runtime required.
+
+This reduces model size and inference latency dramatically while retaining most of the detection accuracy.
+
+### 4. Mahalanobis Distance-Based Routing
+After Q-BAT scores a sample on the edge, the router measures how "confident" that prediction is by computing a Mahalanobis distance against the distribution of training-set scores. If the distance exceeds a calibrated threshold the sample is considered uncertain and forwarded to the cloud BAT ensemble for a higher-quality decision. This keeps bandwidth consumption low: only the hardest cases travel to the cloud.
+
+### 5. Green-LADE Evaluation
+A holistic evaluation methodology inspired by Green AI that jointly measures:
+- **Detection quality**: Precision, Recall, F1-score, Accuracy.
+- **Resource efficiency**: Inference latency, energy consumption (measured via `psutil`).
+
+This lets practitioners compare systems on both axes rather than optimizing accuracy at the expense of sustainability.
+
+## Data Flow
+
+```
+1. Raw log files
+        │  logPreprocess_helper.py
+        ▼
+2. Structured sequences  (context windows of preceding log events)
+        │  data_loader.py  (StandardScaler, train/test split,
+        │                   bootstrap resampling for ensemble)
+        ▼
+3. PyTorch DataLoader tensors
+        │
+        ├─► Cloud: solver_ensemble.py  →  EMAT forward pass
+        │         reconstruction error  →  GMM threshold  →  label
+        │
+        └─► Edge:  executor_runner (C++)  →  EMAT forward pass (.pte)
+                  reconstruction error  →  YAML threshold  →  label
+```
+
+## Design Trade-offs and Decisions
+
+| Decision | Rationale |
+|---|---|
+| Unsupervised learning | Log anomaly labels are rarely available in practice; training on normal logs only removes the labelling bottleneck. |
+| Bagging over boosting | Bootstrap sampling with diverse hyperparameters reduces variance without requiring sequential training, enabling full parallelism. |
+| A8W4 quantization | int4 weights halve memory compared to int8 while int8 activations preserve numeric range, striking a practical accuracy-vs-size balance. |
+| ExecuTorch over ONNX Runtime | ExecuTorch is PyTorch-native, supports the custom operator set used in EMAT, and integrates directly with TorchAO quantization. |
+| Mahalanobis routing over raw score thresholding | Mahalanobis distance accounts for feature correlations, making the routing decision more robust to distribution shift across datasets. |
+
 # Get Started
 
 ## Configuration
