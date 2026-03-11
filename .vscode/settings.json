@@ -1,5 +1,0 @@
-{
-  "python-envs.defaultEnvManager": "ms-python.python:conda",
-  "python-envs.defaultPackageManager": "ms-python.python:conda",
-  "cmake.sourceDirectory": "/home/qinxuan.shi/Desktop/CECO-LAD/Edge/executorch/extension/module"
-}
