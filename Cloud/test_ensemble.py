@@ -34,6 +34,7 @@ def ensemble_method(method, ensemble_data):
 
 
 def main(config):
+    """Run a single BAT model and return its predictions and ground truth."""
     cudnn.benchmark = True
     if not os.path.exists(config.model_save_path):
         mkdir(config.model_save_path)
@@ -43,6 +44,104 @@ def main(config):
     performance(gt, pred)
 
     return pred, gt
+
+
+def run_bat_ensemble(config_path, voting_method='majority', log_intermediate=True):
+    """Run BAT ensemble for a given config and voting method.
+
+    Parameters
+    ----------
+    config_path : str
+        Path to the BAT test YAML config.
+    voting_method : {'majority', 'at least one', 'consensus', 'all'}
+        Voting strategy for combining base model predictions. If 'all',
+        returns a dict with results for all three methods.
+    log_intermediate : bool
+        If True, logs per-model and incremental ensemble performance, matching
+        the original script behavior. If False, only the final ensemble is
+        computed and returned.
+
+    Returns
+    -------
+    ensemble_results, ground_truth
+        If voting_method != 'all', ensemble_results is a 1D numpy array of
+        final ensemble predictions. If voting_method == 'all', a dict
+        mapping method name to prediction array is returned instead.
+    """
+
+    yaml_config = load_config(config_path)
+
+    # Hyperparameter sweep keys
+    search_keys = ['num_epochs', 'k', 'e_layer_num', 'batch_size']
+    search_space = [yaml_config[key] for key in search_keys]
+
+    combinations = list(product(*search_space))
+
+    # Base config (exclude list-based search parameters)
+    base_config = {k: v for k, v in yaml_config.items() if k not in search_keys}
+
+    ground_truth = None
+    prediction_results = []
+
+    for i, values in enumerate(combinations):
+        config_dict = base_config.copy()
+        for key, val in zip(search_keys, values):
+            config_dict[key] = val
+
+        config = argparse.Namespace(**config_dict)
+
+        if log_intermediate:
+            logging.info("\n=== Testing model %d/%d ===", i + 1, len(combinations))
+            for k, v in vars(config).items():
+                logging.info(f"{k}: {v}")
+            logging.info('----------------------------------')
+
+        # single model prediction
+        pred, gt = main(config)
+
+        # check the label
+        if ground_truth is None:
+            ground_truth = gt
+        elif not np.array_equal(ground_truth, gt):
+            raise ValueError("Ground truth not the same!")
+
+        # collect prediction
+        prediction_results.append(pred.reshape(-1, 1))
+
+        # Optional: incremental ensemble metrics
+        if log_intermediate:
+            ensemble_process = np.concatenate(prediction_results, axis=1)
+
+            logging.info(f"===================={voting_method} voting for ensemble step {i + 1}======================")
+            if i + 1 < 3 and (voting_method == 'majority' or voting_method == 'all'):
+                logging.info("Majority voting needs at least three models!")
+            else:
+                if voting_method == 'all':
+                    for method in ['majority', 'at least one', 'consensus']:
+                        ensemble_results_part = ensemble_method(method, ensemble_process)
+                        performance(ground_truth, ensemble_results_part)
+                else:
+                    ensemble_results_part = ensemble_method(voting_method, ensemble_process)
+                    performance(ground_truth, ensemble_results_part)
+
+    # final results for ensemble
+    prediction_results = np.concatenate(prediction_results, axis=1)
+
+    logging.info(f"===================={voting_method} voting for ensemble all models======================")
+
+    if voting_method == 'all':
+        results = {}
+        for method in ['majority', 'at least one', 'consensus']:
+            ensemble_results = ensemble_method(method, prediction_results)
+            if log_intermediate:
+                performance(ground_truth, ensemble_results)
+            results[method] = ensemble_results
+        return results, ground_truth
+
+    ensemble_results = ensemble_method(voting_method, prediction_results)
+    if log_intermediate:
+        performance(ground_truth, ensemble_results)
+    return ensemble_results, ground_truth
 
 
 if __name__ == '__main__':
@@ -65,68 +164,5 @@ if __name__ == '__main__':
                         help='Voting method for ensemble')
     args, _ = parser.parse_known_args()
 
-    yaml_config = load_config(args.config)
-
-    # Hyperparameter sweep keys
-    search_keys = ['num_epochs', 'k', 'e_layer_num', 'batch_size']
-    search_space = [yaml_config[key] for key in search_keys]
-
-    combinations = list(product(*search_space))
-
-    # Base config (exclude list-based search parameters)
-    base_config = {k: v for k, v in yaml_config.items() if k not in search_keys}
-
-    ground_truth = None
-    prediction_results = []
-
-    # BAT model testing by prediction in sequence
-    for i, values in enumerate(combinations):
-        config_dict = base_config.copy()
-        for key, val in zip(search_keys, values):
-            config_dict[key] = val
-
-        config = argparse.Namespace(**config_dict)
-
-        logging.info("\n=== Testing model %d/%d ===", i + 1, len(combinations))
-        for k, v in vars(config).items():
-            logging.info(f"{k}: {v}")
-        logging.info('----------------------------------')
-
-        # single model prediction
-        pred, gt = main(config)
-
-        # check the label
-        if ground_truth is None:
-            ground_truth = gt
-        elif not np.array_equal(ground_truth, gt):
-            raise ValueError("Ground truth not the same!")
-
-        # put all prediction from different models together
-        prediction_results.append(pred.reshape(-1, 1))
-
-        # each step of ensemble results (ensemble process)
-        ensemble_process = np.concatenate(prediction_results, axis=1)
-
-        logging.info(f"===================={args.voting} voting for ensemble step {i + 1}======================")
-        if i + 1 < 3 and (args.voting == 'majority' or args.voting == 'all'):
-            logging.info("Majority voting needs at least three models!")
-        else:
-            if args.voting == 'all':
-                for method in ['majority', 'at least one', 'consensus']:
-                    ensemble_results_part = ensemble_method(method, ensemble_process)
-                    performance(ground_truth, ensemble_results_part)
-            else:
-                ensemble_results_part = ensemble_method(args.voting, ensemble_process)
-                performance(ground_truth, ensemble_results_part)
-
-    # final results for ensemble
-    prediction_results = np.concatenate(prediction_results, axis=1)
-
-    logging.info(f"===================={args.voting} voting for ensemble all models======================")
-    if args.voting == 'all':
-        for method in ['majority', 'at least one', 'consensus']:
-            ensemble_results = ensemble_method(method, prediction_results)
-            performance(ground_truth, ensemble_results)
-    else:
-        ensemble_results = ensemble_method(args.voting, prediction_results)
-        performance(ground_truth, ensemble_results)
+    # Run ensemble with full logging, preserving original behavior
+    run_bat_ensemble(args.config, voting_method=args.voting, log_intermediate=True)
