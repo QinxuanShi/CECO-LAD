@@ -1,0 +1,243 @@
+models:
+  - name: BGL_e3_k3_l3_b32
+    threshold: 0.01091059267815546
+
+  - name: BGL_e3_k3_l3_b64
+    threshold: 0.01858966394010075
+
+  - name: BGL_e3_k3_l3_b96
+    threshold: 0.021225215131757742
+
+  - name: BGL_e3_k3_l6_b32
+    threshold: 0.018668627674104932
+
+  - name: BGL_e3_k3_l6_b64
+    threshold: 0.0177976988608511
+
+  - name: BGL_e3_k3_l6_b96
+    threshold: 0.01742552784749002
+
+  - name: BGL_e3_k3_l8_b32
+    threshold: 0.015629598963426077
+
+  - name: BGL_e3_k3_l8_b64
+    threshold: 0.026888982157383695
+
+  - name: BGL_e3_k3_l8_b96
+    threshold: 0.04282656271569758
+
+  - name: BGL_e3_k4_l3_b32
+    threshold: 0.013128804161083668
+
+  - name: BGL_e3_k4_l3_b64
+    threshold: 0.03365467258146372
+
+  - name: BGL_e3_k4_l3_b96
+    threshold: 0.029031091305399437
+
+  - name: BGL_e3_k4_l6_b32
+    threshold: 0.022563638256252978
+
+  - name: BGL_e3_k4_l6_b64
+    threshold: 0.021324174941750297
+
+  - name: BGL_e3_k4_l6_b96
+    threshold: 0.037254510811712584
+
+  - name: BGL_e3_k4_l8_b32
+    threshold: 0.033541414445852256
+
+  - name: BGL_e3_k4_l8_b64
+    threshold: 0.033128298712669015
+
+  - name: BGL_e3_k4_l8_b96
+    threshold: 0.05035989879989204
+
+  - name: BGL_e3_k5_l3_b32
+    threshold: 0.016043214623080497
+
+  - name: BGL_e3_k5_l3_b64
+    threshold: 0.012597534203633623
+
+  - name: BGL_e3_k5_l3_b96
+    threshold: 0.022897382787454255
+
+  - name: BGL_e3_k5_l6_b32
+    threshold: 0.015169999458659288
+
+  - name: BGL_e3_k5_l6_b64
+    threshold: 0.04999772508015603
+
+  - name: BGL_e3_k5_l6_b96
+    threshold: 0.03425269661899764
+
+  - name: BGL_e3_k5_l8_b32
+    threshold: 0.017676949003627263
+
+  - name: BGL_e3_k5_l8_b64
+    threshold: 0.03662373477303527
+
+  - name: BGL_e3_k5_l8_b96
+    threshold: 0.019267496347224793
+
+  - name: BGL_e6_k3_l3_b32
+    threshold: 0.009481889297203549
+
+  - name: BGL_e6_k3_l3_b64
+    threshold: 0.02283118108329264
+
+  - name: BGL_e6_k3_l3_b96
+    threshold: 0.03419255620750357
+
+  - name: BGL_e6_k3_l6_b32
+    threshold: 0.1055550065308422
+
+  - name: BGL_e6_k3_l6_b64
+    threshold: 0.013612073312062578
+
+  - name: BGL_e6_k3_l6_b96
+    threshold: 0.030645092418357566
+
+  - name: BGL_e6_k3_l8_b32
+    threshold: 0.0382266427383304
+
+  - name: BGL_e6_k3_l8_b64
+    threshold: 0.014071081918804025
+
+  - name: BGL_e6_k3_l8_b96
+    threshold: 0.06115035094855986
+
+  - name: BGL_e6_k4_l3_b32
+    threshold: 0.015273954865453982
+
+  - name: BGL_e6_k4_l3_b64
+    threshold: 0.019972505885167996
+
+  - name: BGL_e6_k4_l3_b96
+    threshold: 0.013341944750447355
+
+  - name: BGL_e6_k4_l6_b32
+    threshold: 0.013180410841476
+
+  - name: BGL_e6_k4_l6_b64
+    threshold: 0.018778347772488678
+
+  - name: BGL_e6_k4_l6_b96
+    threshold: 0.01423487428911592
+
+  - name: BGL_e6_k4_l8_b32
+    threshold: 0.01933964799730245
+
+  - name: BGL_e6_k4_l8_b64
+    threshold: 0.023071967700275947
+
+  - name: BGL_e6_k4_l8_b96
+    threshold: 0.026915435261294543
+
+  - name: BGL_e6_k5_l3_b32
+    threshold: 0.010317269983651452
+
+  - name: BGL_e6_k5_l3_b64
+    threshold: 0.023464946109964704
+
+  - name: BGL_e6_k5_l3_b96
+    threshold: 0.029032202947905657
+
+  - name: BGL_e6_k5_l6_b32
+    threshold: 0.011749160150444865
+
+  - name: BGL_e6_k5_l6_b64
+    threshold: 0.018466687951173195
+
+  - name: BGL_e6_k5_l6_b96
+    threshold: 0.014873185612231127
+
+  - name: BGL_e6_k5_l8_b32
+    threshold: 0.06468126509395862
+
+  - name: BGL_e6_k5_l8_b64
+    threshold: 0.011469561806186843
+
+  - name: BGL_e6_k5_l8_b96
+    threshold: 0.08791280179986907
+
+  - name: BGL_e10_k3_l3_b32
+    threshold: 0.01815437308984473
+
+  - name: BGL_e10_k3_l3_b64
+    threshold: 0.018216436757631887
+
+  - name: BGL_e10_k3_l3_b96
+    threshold: 0.01464655278179106
+
+  - name: BGL_e10_k3_l6_b32
+    threshold: 0.012377901474490517
+
+  - name: BGL_e10_k3_l6_b64
+    threshold: 0.016936475780486494
+
+  - name: BGL_e10_k3_l6_b96
+    threshold: 0.014428668244835047
+
+  - name: BGL_e10_k3_l8_b32
+    threshold: 0.011776808632753127
+
+  - name: BGL_e10_k3_l8_b64
+    threshold: 0.0333564726421538
+
+  - name: BGL_e10_k3_l8_b96
+    threshold: 0.019307152624106563
+
+  - name: BGL_e10_k4_l3_b32
+    threshold: 0.008892347395288111
+
+  - name: BGL_e10_k4_l3_b64
+    threshold: 0.012528037948885984
+
+  - name: BGL_e10_k4_l3_b96
+    threshold: 0.01631851715013662
+
+  - name: BGL_e10_k4_l6_b32
+    threshold: 0.026389287337769775
+
+  - name: BGL_e10_k4_l6_b64
+    threshold: 0.011476539758373925
+
+  - name: BGL_e10_k4_l6_b96
+    threshold: 0.06977355194043507
+
+  - name: BGL_e10_k4_l8_b32
+    threshold: 0.048035936449616706
+
+  - name: BGL_e10_k4_l8_b64
+    threshold: 0.018027357147581358
+
+  - name: BGL_e10_k4_l8_b96
+    threshold: 0.029819372869528706
+
+  - name: BGL_e10_k5_l3_b32
+    threshold: 0.011247165352152172
+
+  - name: BGL_e10_k5_l3_b64
+    threshold: 0.01618496485166499
+
+  - name: BGL_e10_k5_l3_b96
+    threshold: 0.02846958155740477
+
+  - name: BGL_e10_k5_l6_b32
+    threshold: 0.015017511039636349
+
+  - name: BGL_e10_k5_l6_b64
+    threshold: 0.01733611595760521
+
+  - name: BGL_e10_k5_l6_b96
+    threshold: 0.026828903513197444
+
+  - name: BGL_e10_k5_l8_b32
+    threshold: 0.014906640454252652
+
+  - name: BGL_e10_k5_l8_b64
+    threshold: 0.013101303618209013
+
+  - name: BGL_e10_k5_l8_b96
+    threshold: 0.03641911689048577

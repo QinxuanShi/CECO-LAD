@@ -1,4 +1,4 @@
-name: executorch
+name: ceco-lad-edge
 channels:
   - conda-forge
 dependencies:
@@ -94,4 +94,3 @@ dependencies:
       - urllib3==2.2.3
       - werkzeug==3.1.4
       - zstd==1.5.5.1
-prefix: /home/qinxuan/miniforge3/envs/executorch

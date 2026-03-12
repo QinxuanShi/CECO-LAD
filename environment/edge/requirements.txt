@@ -7,7 +7,6 @@ charset-normalizer==3.4.0
 cmake==3.30.5
 exceptiongroup==1.2.2
 execnet==2.1.1
-executorch @ file:///home/qinxuan/Desktop/executorch
 expecttest==0.2.1
 filelock==3.16.1
 flatbuffers==24.3.25

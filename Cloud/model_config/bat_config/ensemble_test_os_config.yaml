@@ -3,7 +3,6 @@ win_size: 100
 data_seq_len: 10
 input_c: 10
 output_c: 10
-pretrained_model: 20
 dataset: "Openstack"
 mode: "test"
 data_path: "dataset/OpenStack"
