@@ -70,7 +70,7 @@ This zip contains ready-to-use score files, thresholds, predictions, selected in
 
 In all example scripts, we use **OpenStack** as the running example dataset to showcase the end-to-end CECO-LAD framework. The same workflow applies to **BGL** and **HDFS** by switching dataset-specific configs and paths.
 
-## BAT Model
+## Cloud-based BAT
 
 For BAT, it is bagging based ensemble, we use 81 base EM-AT models for bagging in CECO-LAD. To ensure robustness, we use four parameters: num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
 
