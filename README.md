@@ -10,6 +10,14 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
   <img src="pictures/framework.png" width="700">
 </p>
 
+# Repository Structure
+
+- Cloud/: Cloud-side BAT training, testing, ensemble inference, and datasets.
+- Edge/: Edge-side Q-BAT (ExecuTorch) models, routing, hybrid evaluation, and prediction_results.
+- environment/: Conda environment and Python dependency specifications for cloud and edge.
+- pictures/: Figures for the paper and README (framework overview, OpenStack results, etc.).
+- collaborative_execution.sh: Top-level script (run on the edge device) to orchestrate the full cloud–edge pipeline.
+
 # Get Started
 
 ## Configuration
@@ -66,7 +74,7 @@ In all example scripts, we use **OpenStack (os)** as the running example dataset
 
 ## BAT Model
 
-For BAT, it is bagging based ensemble, we use 81 base models for bagging in CECO-LAD. To ensure robustness, we use four parameters:num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
+For BAT, it is bagging based ensemble, we use 81 base EM-AT models for bagging in CECO-LAD. To ensure robustness, we use four parameters:num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
 
 ```bash
 cd Cloud
@@ -80,7 +88,7 @@ python test_ensemble.py --voting majority
 
 ## Edge-based Q-BAT
 
-Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering the model for Q-BAT at the edge. We have already included the ExecuTorch project locally in our codebase, and **all files and folders under `Edge/executorch/` are part of, and used by, this ExecuTorch project** (please keep them intact when running Q-BAT).
+Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering the model for Q-BAT at the edge. Q-BAT is implemented as an ensemble of 3 quantized EM-AT base models running on the edge device. Please note that **all files and folders under `Edge/` are part of, and used by, this ExecuTorch project** (please keep them intact when running Q-BAT).
 
 If you want to try by your self for the start, according to the guideline of ExecuTorch, you can clone and install ExecuTorch locally.
 

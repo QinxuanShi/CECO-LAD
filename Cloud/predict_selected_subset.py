@@ -193,8 +193,7 @@ def main():
     dataset = cfg["dataset"]
     # model_save_path = cfg["model_save_path"]
     # default model save path relative to this repository; adjust if needed
-    # model_save_path = "checkpoints/ensemble_os"
-    model_save_path = "/home/qinxuan.shi/Desktop/Ensemble/checkpoints/ensemble_os"
+    model_save_path = "checkpoints/ensemble_os"
 
     # Hyperparameter sweep keys (same as in test_ensemble.py)
     search_keys = ["num_epochs", "k", "e_layer_num", "batch_size"]
