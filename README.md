@@ -72,7 +72,7 @@ In all example scripts, we use **OpenStack** as the running example dataset to s
 
 ## Cloud-based BAT
 
-For BAT, it is bagging based ensemble, we use 81 base EM-AT models for bagging in CECO-LAD. To ensure robustness, we use four parameters: num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
+For BAT, it is a bagging-based ensemble; we use 81 base EM-AT models for BAT in CECO-LAD. To ensure robustness, we use four parameters: num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
 
 The following commands demonstrate how to launch BAT training and evaluation from the Cloud directory:
 
@@ -88,7 +88,7 @@ python test_ensemble.py --voting majority
 
 ## Edge-based Q-BAT
 
-Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering and optimizing models at the edge. Q-BAT is implemented as an ensemble of 3 quantized EM-AT base models running on the edge device. After you clone ExecuTorch into `Edge/executorch/`, **all files and folders inside `Edge/` belong to the ExecuTorch project and are required for the Q-BAT edge pipeline**, so they should be kept intact when running Q-BAT. (Put these under executorch/)
+Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering and optimizing models at the edge. Q-BAT is implemented as an ensemble of quantized EM-AT base models (K = 3) running on the edge device. After you clone ExecuTorch into `Edge/executorch/`, **all files and folders inside `Edge/` belong to the ExecuTorch project and are required for the Q-BAT edge pipeline**, so they should be kept intact when running Q-BAT. (Put these under executorch/)
 
 First of all, according to the guideline of ExecuTorch, you can clone and install ExecuTorch locally.
 
