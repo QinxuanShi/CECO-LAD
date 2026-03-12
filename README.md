@@ -15,8 +15,8 @@ Artificial intelligence (AI)-driven Log Anomaly Detection (LAD) is a critical co
 - Cloud/: Cloud-side BAT training, testing, ensemble inference, and datasets.
 - Edge/: Edge-side Q-BAT (ExecuTorch) models, routing, hybrid evaluation, and prediction_results.
 - environment/: Conda environment and Python dependency specifications for cloud and edge.
-- pictures/: Figures for the paper and README (framework overview, OpenStack results, etc.).
-- collaborative_execution.sh: Top-level script (run on the edge device) to orchestrate the full cloud–edge pipeline.
+- pictures/: Figures for the framework and example performance of OpenStack.
+- collaborative_execution.sh: Top-level script (run on the edge device) that orchestrates the full cloud–edge collaboration pipeline.
 
 # Get Started
 
@@ -54,27 +54,27 @@ pip install -r ./environment/edge/requirements.txt
 
 ## Download Data
 
-CECO-LAD and other baseline methods are implemented on [HDFS](https://github.com/logpai/loghub/tree/master/HDFS), [OpenStack](https://github.com/logpai/loghub/tree/master/OpenStack), and [BGL](https://github.com/logpai/loghub/tree/master/BGL) datasets. These datasets are available on [LogHub](https://github.com/logpai/loghub). Here we directly put the well-processed datasets here in ./Cloud/dataset.
+CECO-LAD is implemented on [HDFS](https://github.com/logpai/loghub/tree/master/HDFS), [OpenStack](https://github.com/logpai/loghub/tree/master/OpenStack), and [BGL](https://github.com/logpai/loghub/tree/master/BGL) datasets. These datasets are available on [LogHub](https://github.com/logpai/loghub).
 
 ## Download Trained Model
 
-The trained BAT models can be downloaded from the [Google Drive](https://drive.google.com/drive/folders/1dh_pSu5M7fZVIWpdwfyBa4OLC4MKO1N0?usp=drive_link). The trained Q-BAT models are included in the ./Edge/executorch/checkpoints.
+The pre-trained BAT models can be downloaded from the [Google Drive](https://drive.google.com/drive/folders/1dh_pSu5M7fZVIWpdwfyBa4OLC4MKO1N0?usp=drive_link). The pre-trained Q-BAT models are included in the ./Edge/executorch/checkpoints.
 
 ## Precomputed Prediction Data
 
-To simplify reproduction of the reported results, we also provide all precomputed prediction-related data in a single archive:
+To simplify reproduction of the reported results, we also provide all precomputed prediction-related data in Edge/prediction_results/prediction_data.zip.
 
-- Edge/prediction_results/prediction_data.zip
-
-This zip contains ready-to-use score files, thresholds, predictions, selected indices, and other intermediate results for all datasets. You can directly use these files with the provided scripts (e.g., for routing, hybrid evaluation, and Green-LADE analysis) without re-running model training or inference.
+This zip contains ready-to-use score files, thresholds, predictions, selected indices, and other intermediate results for the OpenStack dataset. You can directly use these files with the provided scripts (e.g., for routing, hybrid evaluation, and Green-LADE analysis) without re-running model training or inference.
 
 # Experiment
 
-In all example scripts, we use **OpenStack (os)** as the running example dataset to showcase the end-to-end CECO-LAD framework. The same workflow applies to **BGL (bgl)** and **HDFS (hdfs)** by switching dataset-specific configs and paths.
+In all example scripts, we use **OpenStack** as the running example dataset to showcase the end-to-end CECO-LAD framework. The same workflow applies to **BGL** and **HDFS** by switching dataset-specific configs and paths.
 
 ## BAT Model
 
-For BAT, it is bagging based ensemble, we use 81 base EM-AT models for bagging in CECO-LAD. To ensure robustness, we use four parameters:num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
+For BAT, it is bagging based ensemble, we use 81 base EM-AT models for bagging in CECO-LAD. To ensure robustness, we use four parameters: num_epochs, k (loss weight), e_layer_num (number of encoder layer), and batch_size. The detailed configs for BAT are provided in ./model_config/bat_config.
+
+The following commands demonstrate how to launch BAT training and evaluation from the Cloud directory:
 
 ```bash
 cd Cloud
@@ -88,9 +88,9 @@ python test_ensemble.py --voting majority
 
 ## Edge-based Q-BAT
 
-Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering the model for Q-BAT at the edge. Q-BAT is implemented as an ensemble of 3 quantized EM-AT base models running on the edge device. Please note that **all files and folders under `Edge/` are part of, and used by, this ExecuTorch project** (please keep them intact when running Q-BAT).
+Here we use [ExecuTorch](https://docs.pytorch.org/executorch/0.3/) (version 0.3) for lowering and optimizing models at the edge. Q-BAT is implemented as an ensemble of 3 quantized EM-AT base models running on the edge device. After you clone ExecuTorch into `Edge/executorch/`, **all files and folders inside `Edge/` belong to the ExecuTorch project and are required for the Q-BAT edge pipeline**, so they should be kept intact when running Q-BAT. (Put these under executorch/)
 
-If you want to try by your self for the start, according to the guideline of ExecuTorch, you can clone and install ExecuTorch locally.
+First of all, according to the guideline of ExecuTorch, you can clone and install ExecuTorch locally.
 
 ```bash
 cd Edge
@@ -116,9 +116,9 @@ cmake --build cmake-out --target executor_runner -j9
 
 ### Runner Customize
 
-After downloading and setting up the executorch, we need to customize the executor_runner to enable the customized input data. By replacing the executor_runner.cpp in the folder ./executorch/examples/portable/executor_runner to enable user customized runner. (We have already updated the file in the current version)
+After setting up the executorch, we need to customize the executor_runner to enable the customized input data. By replacing the **executor_runner.cpp** in the folder `./executorch/examples/portable/executor_runner` to enable user customized runner.
 
-After updating the executor_runner file, build the the executor_runner target again:
+After updating the executor_runner file, build the executor_runner target again:
 
 ```bash
 # Build the executor_runner target
@@ -137,15 +137,15 @@ python convert_torchao.py
 
 To save time, both the trained Q-BAT models and the preprocessed datasets for executing at the edge can be downloaded from the [Google Drive](https://drive.google.com/drive/folders/1pBNMsucvw1eypn5gC_QvOzeRnMgTzLq2?usp=drive_link).
 
-Model inference on the edge is orchestrated by the top-level script in the Edge folder. It wraps the ExecuTorch runners and helper scripts to perform:
+Model inference with Q-BAT on the edge is orchestrated by the main script in the Edge folder (i.e., `execute_edge.sh`). This script coordinates the ExecuTorch runners and helper utilities to:
 
-- Executing Q-BAT models to obtain anomaly scores for each dataset.
-- Deriving per-model thresholds from training scores.
-- Converting scores to binary predictions on the edge.
-- Computing Mahalanobis-distance-based routing indices (which samples would be sent to the cloud).
-- Optionally, performing hybrid evaluation that combines edge-only and cloud-enhanced predictions.
+- Execute Q-BAT models and produce anomaly scores for each dataset.
+- Computing per-model thresholds using EM-GMM-based method from training scores.
+- Convert anomaly scores into binary predictions on the edge.
+- Routing via Mahalanobis distance-based policy, providing selected samples that are transmitted to the cloud for more accurate prediction.
+- Finally, perform collaborative evaluation that aggregate edge predictions and cloud predictions.
 
-To execute the Q-BAT models and run the full edge-side pipeline using the default OpenStack (os) settings, run:
+To execute the Q-BAT models and run the full edge-side pipeline using the example of OpenStack settings, run:
 
 ```bash
 cd Edge
@@ -154,14 +154,16 @@ bash execute_edge.sh
 
 ### Cloud–Edge Collaboration Demo (OpenStack example)
 
-CECO-LAD is designed for deployment where **Cloud** and **Edge** run on different devices. We provide ready-made scripts that implement the full OpenStack-based pipeline:
+CECO-LAD is designed for deployment in heterogeneous cloud-edge environments, where **Cloud** and **Edge** run on different devices. We provide scripts that implement the full pipeline using the OpenStack as an example:
 
 - On the **Edge** device, deploy and execute the top-level `collaborative_execution.sh` script to run the end-to-end edge and cloud–edge workflow using OpenStack as the example dataset.
-- The scripts orchestrate: (1) Q-BAT inference on the edge, (2) Mahalanobis-distance-based routing of uncertain samples, (3) BAT ensemble inference on the cloud only for the routed subset, and (4) hybrid evaluation that combines edge and cloud predictions.
+- The scripts orchestrate: (1) Q-BAT inference on the edge, (2) Mahalanobis distance-based routing of uncertain samples, (3) BAT ensemble inference on the cloud only for the routed subset, and (4) collaborative evaluation that aggregate edge and cloud predictions.
 
-To help users quickly understand and reproduce the collaboration workflow, all intermediate and final results (scores, thresholds, indices, predictions, and hybrid metrics) from our experiments are already stored under the `./prediction_results/` directory (and its `prediction_data.zip` archive).
+To help users quickly understand and reproduce the collaboration workflow, all intermediate and final results (scores, thresholds, indices, predictions, and hybrid metrics) from our experiments are already stored under the `prediction_results/` directory (and its `prediction_data.zip` archive).
 
-Please refer to the scripts under ./Edge/edge_scripts and the top-level collaborative_execution.sh for the exact commands and for adapting the workflow to BGL and HDFS.
+Please refer to the scripts under edge_scripts/ and the top-level collaborative_execution.sh for the exact commands.
+
+Here is the screenshot of Q-BAT performance and CECO-LAD performance using the OpenStack dataset.
 
 <p align="center">
   <img src="pictures/openstack_results.png" width="700">

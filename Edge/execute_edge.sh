@@ -5,8 +5,8 @@ set -euo pipefail
 # All three datasets (os, bgl, hdfs) share the same
 # stages; os is the reference example.
 #
-# Usage (from repo root or Edge/):
-#   bash Edge/execute_edge.sh [DATASET] [STAGE]
+# Usage:
+#   bash execute_edge.sh [DATASET] [STAGE]
 #
 # Defaults:
 #   DATASET: os
@@ -19,7 +19,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 EDGE_DIR="${ROOT_DIR}/Edge"
 
 usage() {
-  echo "Usage: bash Edge/execute_edge.sh [DATASET] [STAGE]" >&2
+  echo "Usage: bash execute_edge.sh [DATASET] [STAGE]" >&2
   echo "  DATASET: os | bgl | hdfs (default: os)" >&2
   echo "  STAGE: scores | thresh | predict | routing | hybrid | all | cloud (default: all)" >&2
 }
@@ -74,8 +74,8 @@ case "${STAGE}" in
       usage
       exit 1
     fi
-    echo "[execute_edge] os: full Edge↔Cloud pipeline via scripts/execute_os_edge_cloud.sh"
-    bash "${ROOT_DIR}/scripts/execute_os_edge_cloud.sh"
+    echo "[execute_edge] os: full Edge↔Cloud pipeline via ./collaborative_execution.sh"
+    bash "${ROOT_DIR}/scripts/collaborative_execution.sh"
     ;;
   all)
     echo "[execute_edge] ${DATASET}: scores -> thresh -> predict -> routing -> hybrid"

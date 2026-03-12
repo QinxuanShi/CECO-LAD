@@ -19,7 +19,7 @@ CLOUD_CLOUD_DIR="/path/to/CECO-LAD/Cloud"
 # -------------------------------------------
 
 if [[ "${CLOUD_USER}" == "your_cloud_username" || "${CLOUD_HOST}" == "your.cloud.hostname.or.ip" || "${CLOUD_CLOUD_DIR}" == "/path/to/CECO-LAD/Cloud" ]]; then
-  echo "[execute_os_edge_cloud] Please edit this script and set CLOUD_USER, CLOUD_HOST and CLOUD_CLOUD_DIR first." >&2
+  echo "[cloud-edge collaboration] Please edit this script and set CLOUD_USER, CLOUD_HOST and CLOUD_CLOUD_DIR first." >&2
   exit 1
 fi
 
@@ -32,33 +32,33 @@ EDGE_PRED_REL="prediction_results/cloud_selected_ensemble_preds.txt"
 CLOUD_SELECTED_REMOTE="${CLOUD_CLOUD_DIR}/selected_samples/os_selected.txt"
 CLOUD_PRED_REMOTE="${CLOUD_CLOUD_DIR}/selected_samples/cloud_selected_ensemble_preds.txt"
 
-echo "[execute_os_edge_cloud] Step 1: Edge OS pipeline (prediction (anomaly score) -> threshold calculation -> anomaly prediction (binary) -> routing) via execute_edge.sh"
+echo "[cloud-edge collaboration] Step 1: Edge OS pipeline (prediction (anomaly score) -> threshold calculation -> anomaly prediction (binary) -> routing) via execute_edge.sh"
 bash "${EDGE_DIR}/execute_edge.sh" os scores
 bash "${EDGE_DIR}/execute_edge.sh" os thresh
 bash "${EDGE_DIR}/execute_edge.sh" os predict
 bash "${EDGE_DIR}/execute_edge.sh" os routing
 
 if [[ ! -f "${EDGE_SELECTED_REL}" ]]; then
-  echo "[execute_os_edge_cloud] ERROR: Edge selected file not found: ${EDGE_SELECTED_REL}" >&2
+  echo "[cloud-edge collaboration] ERROR: Edge selected file not found: ${EDGE_SELECTED_REL}" >&2
   exit 1
 fi
 
-echo "[execute_os_edge_cloud] Step 2: Copy selected samples Edge -> Cloud"
+echo "[cloud-edge collaboration] Step 2: Copy selected samples Edge -> Cloud"
 scp "${EDGE_SELECTED_REL}" "${CLOUD_USER}@${CLOUD_HOST}:${CLOUD_SELECTED_REMOTE}"
 
-echo "[execute_os_edge_cloud] Step 3: Run cloud selected inference on Cloud"
+echo "[cloud-edge collaboration] Step 3: Run cloud selected inference on Cloud"
 ssh "${CLOUD_USER}@${CLOUD_HOST}" "cd ${CLOUD_CLOUD_DIR} && ./execute_selected_cloud.sh"
 
-echo "[execute_os_edge_cloud] Step 4: Copy cloud predictions Cloud -> Edge"
+echo "[cloud-edge collaboration] Step 4: Copy cloud predictions Cloud -> Edge"
 scp "${CLOUD_USER}@${CLOUD_HOST}:${CLOUD_PRED_REMOTE}" "${EDGE_PRED_REL}"
 
 if [[ ! -f "${EDGE_PRED_REL}" ]]; then
-  echo "[execute_os_edge_cloud] ERROR: Cloud prediction file not found after copy: ${EDGE_PRED_REL}" >&2
+  echo "[cloud-edge collaboration] ERROR: Cloud prediction file not found after copy: ${EDGE_PRED_REL}" >&2
   exit 1
 fi
 
-echo "[execute_os_edge_cloud] Step 5: Edge hybrid evaluation (using cloud-selected preds)"
+echo "[cloud-edge collaboration] Step 5: Edge hybrid evaluation (using cloud-selected preds)"
 cd "${EDGE_DIR}"
 bash ./execute_edge.sh os hybrid
 
-echo "[execute_os_edge_cloud] Done: full OS Edge↔Cloud pipeline complete."
+echo "[cloud-edge collaboration] Done: full OS Edge↔Cloud pipeline complete."

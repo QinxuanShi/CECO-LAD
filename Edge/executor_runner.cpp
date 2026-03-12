@@ -302,7 +302,7 @@ int main(int argc, char **argv)
     }
     trainScoreFile.close();
 
-    std::cout << "Saved " << train_energy.size() << " train scores to "
+    std::cout << "Saved train scores to "
               << scorefilename << std::endl;
   }
   else if (mode == "test")
@@ -373,7 +373,7 @@ int main(int argc, char **argv)
     }
     testScoreFile.close();
 
-    std::cout << "Saved " << test_energy.size() << " test scores to "
+    std::cout << "Saved test scores to "
               << scorefilename << std::endl;
 
     std::cout << "the latency of the model on test data is " << std::endl;
