@@ -152,7 +152,7 @@ cd Edge
 bash execute_edge.sh
 ```
 
-### Cloud–Edge Collaboration Demo (OpenStack example)
+## Cloud–Edge Collaboration Demo (OpenStack example)
 
 CECO-LAD is designed for deployment in heterogeneous cloud-edge environments, where **Cloud** and **Edge** run on different devices. We provide scripts that implement the full pipeline using the OpenStack as an example:
 
